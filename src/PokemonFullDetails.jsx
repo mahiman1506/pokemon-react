@@ -150,14 +150,14 @@ const PokemonFullDetails = () => {
   </tbody>
 </table>
 
-        {/* <table>
+        <table>
           <tr>
             <th>Moves:</th>
           </tr>
           <tr>
             <td>{pokemonData.moves.map((move) => move.move.name).join(", ")}</td>
           </tr>
-        </table> */}
+        </table>
 
       </div>
     </div>
