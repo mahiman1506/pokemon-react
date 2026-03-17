@@ -1,10 +1,11 @@
 import { PokemonCard } from "./PokemonCards";
 import { useEffect, useState } from "react";
 import "./index.css";
-import { animate } from 'animejs';
+import { animate } from "animejs";
 import Header from "./assets/Header";
 import Footer from "./assets/Footer";
 import PokeballScroll from "./scroll";
+import { Helmet } from "react-helmet-async";
 
 export const Pokemon = () => {
   const [pokemon, setPokemon] = useState([]);
@@ -22,7 +23,9 @@ export const Pokemon = () => {
     setError(null);
     try {
       const offset = (currentPage - 1) * pokemonPerPage;
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${pokemonPerPage}`);
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${pokemonPerPage}`,
+      );
       const data = await res.json();
 
       const detailedPokemonData = data.results.map(async (curPokemon) => {
@@ -51,19 +54,19 @@ export const Pokemon = () => {
 
   useEffect(() => {
     if (loading) {
-      animate('span.loading-dot', {
+      animate("span.loading-dot", {
         y: [
-          { to: '-2.75rem', ease: 'outExpo', duration: 600 },
-          { to: 0, ease: 'outBounce', duration: 800, delay: 100 }
+          { to: "-2.75rem", ease: "outExpo", duration: 600 },
+          { to: 0, ease: "outBounce", duration: 800, delay: 100 },
         ],
         rotate: {
-          from: '-1turn',
-          delay: 0
+          from: "-1turn",
+          delay: 0,
         },
         delay: (_, i) => i * 50,
-        ease: 'inOutCirc',
+        ease: "inOutCirc",
         loopDelay: 1000,
-        loop: true
+        loop: true,
       });
     }
   }, [loading]);
@@ -83,8 +86,10 @@ export const Pokemon = () => {
 
   const goToFirstPage = () => setCurrentPage(1);
   const goToLastPage = () => setCurrentPage(totalPages);
-  const goToNextPage = () => currentPage < totalPages && setCurrentPage((prev) => prev + 1);
-  const goToPrevPage = () => currentPage > 1 && setCurrentPage((prev) => prev - 1);
+  const goToNextPage = () =>
+    currentPage < totalPages && setCurrentPage((prev) => prev + 1);
+  const goToPrevPage = () =>
+    currentPage > 1 && setCurrentPage((prev) => prev - 1);
 
   if (loading) {
     return (
@@ -111,6 +116,13 @@ export const Pokemon = () => {
 
   return (
     <>
+      <Helmet>
+        <title>PokSphere | Pokémon Explorer</title>
+        <meta
+          name="description"
+          content="Search Pokémon and explore stats, abilities and evolutions."
+        />
+      </Helmet>
       <Header />
       <div className="background-wrapper">
         <PokeballScroll />
@@ -145,7 +157,9 @@ export const Pokemon = () => {
           <button onClick={goToPrevPage} disabled={currentPage === 1}>
             ◀ Previous
           </button>
-          <span>Page {currentPage} of {totalPages}</span>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
           <button onClick={goToNextPage} disabled={currentPage === totalPages}>
             Next ▶
           </button>
